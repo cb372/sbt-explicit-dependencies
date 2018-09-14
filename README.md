@@ -62,7 +62,7 @@ sbt:example> undeclaredCompileDependenciesTest
 [warn] "com.google.guava" % "guava" % "26.0-jre"
 [warn] "org.typelevel" %% "cats-core" % "1.2.0"
 [warn] "org.typelevel" %% "cats-effect" % "0.10.1"
-[error] (undeclaredCompileDependenciesTest) Failing the build because undeclared depedencies were found
+[error] (undeclaredCompileDependenciesTest) Failing the build because undeclared dependencies were found
 [error] Total time: 1 s, completed 14-Sep-2018 12:38:23
 ```
 
@@ -91,7 +91,7 @@ sbt:example> unusedCompileDependenciesTest
 [warn] "org.http4s" %% "http4s-circe" % "0.18.16"
 [warn] "org.postgresql" % "postgresql" % "42.2.5"
 [warn] "org.tpolecat" %% "doobie-postgres" % "0.5.3"
-[error] (unusedCompileDependenciesTest) Failing the build because unused depedencies were found
+[error] (unusedCompileDependenciesTest) Failing the build because unused dependencies were found
 [error] Total time: 1 s, completed 14-Sep-2018 16:36:11
 ```
 
