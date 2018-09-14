@@ -1,7 +1,7 @@
 # sbt-explicit-dependencies
 
-An sbt plugin to check that your project does not directly depend on any
-transitive dependencies for compilation.
+An sbt plugin to check that your `libraryDependencies` accurately reflects the
+libraries that your code depends on in order to compile.
 
 For example, say your project declares only a single dependency:
 
@@ -36,9 +36,10 @@ addSbtPlugin("com.github.cb372" % "sbt-explicit-dependencies" % "0.1.0")
 
 ## How to use
 
-The main task exposed by the plugin is `undeclaredCompileDependencies`.
+### Finding accidental use of transitive dependencies
 
-This will show a list of dependencies that should be declared explicitly:
+The `undeclaredCompileDependencies` shows a list of dependencies that should be
+declared explicitly:
 
 ```
 sbt:example> undeclaredCompileDependencies
@@ -63,6 +64,35 @@ sbt:example> undeclaredCompileDependenciesTest
 [warn] "org.typelevel" %% "cats-effect" % "0.10.1"
 [error] (undeclaredCompileDependenciesTest) Failing the build because undeclared depedencies were found
 [error] Total time: 1 s, completed 14-Sep-2018 12:38:23
+```
+
+### Finding unnecessary dependencies
+
+The `unusedCompileDependencies` task shows a list of libraries that have been
+declared as dependencies but are not actually needed for compilation:
+
+```
+sbt:example> unusedCompileDependencies
+[warn] The following libraries are declared in libraryDependencies but are not needed for compilation:
+[warn] "com.github.cb372" %% "scalacache-guava" % "0.24.3"
+[warn] "org.http4s" %% "http4s-circe" % "0.18.16"
+[warn] "org.postgresql" % "postgresql" % "42.2.5"
+[warn] "org.tpolecat" %% "doobie-postgres" % "0.5.3"
+[success] Total time: 2 s, completed 14-Sep-2018 16:30:50
+```
+
+This is also a task `unusedCompileDependenciesTest` which will fail the build if
+this list is non-empty. This can be useful as part of a CI pipeline:
+
+```
+sbt:example> unusedCompileDependenciesTest
+[warn] The following libraries are declared in libraryDependencies but are not needed for compilation:
+[warn] "com.github.cb372" %% "scalacache-guava" % "0.24.3"
+[warn] "org.http4s" %% "http4s-circe" % "0.18.16"
+[warn] "org.postgresql" % "postgresql" % "42.2.5"
+[warn] "org.tpolecat" %% "doobie-postgres" % "0.5.3"
+[error] (unusedCompileDependenciesTest) Failing the build because unused depedencies were found
+[error] Total time: 1 s, completed 14-Sep-2018 16:36:11
 ```
 
 ## Example project
