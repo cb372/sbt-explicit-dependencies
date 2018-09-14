@@ -7,11 +7,11 @@ import sbt.internal.inc.Analysis
 object ExplicitDepsPlugin extends AutoPlugin {
 
   object UndeclaredCompileDependenciesException extends FeedbackProvidedException {
-    override def toString: String = "Failing the build because undeclared depedencies were found"
+    override def toString: String = "Failing the build because undeclared dependencies were found"
   }
 
   object UnusedCompileDependenciesException extends FeedbackProvidedException {
-    override def toString: String = "Failing the build because unused depedencies were found"
+    override def toString: String = "Failing the build because unused dependencies were found"
   }
 
   object autoImport {
