@@ -14,8 +14,8 @@ This brings in a few other libraries as transitive dependencies, including
 
 If your code directly depends on classes from `cats-core`, e.g.:
 
-```
-scala val nel = cats.data.NonEmptyList.of(1, 2, 3)
+```scala
+val nel = cats.data.NonEmptyList.of(1, 2, 3)
 ```
 
 then this plugin will warn you about that fact.
