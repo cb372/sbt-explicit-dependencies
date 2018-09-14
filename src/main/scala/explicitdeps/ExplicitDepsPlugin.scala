@@ -50,7 +50,7 @@ object ExplicitDepsPlugin extends AutoPlugin {
     if (undeclaredCompileDependencies.nonEmpty) {
       val sorted = undeclaredCompileDependencies.toList.sortBy(dep => s"${dep.organization} ${dep.name}")
       log.warn(
-        s"""The project depends on the following libraries for compilation but they not declared in libraryDependencies:
+        s"""The project depends on the following libraries for compilation but they are not declared in libraryDependencies:
           |${sorted.mkString("\n")}""".stripMargin)
     } else {
       log.info("The project explicitly declares all the libraries that it directly depends on for compilation. Good job!")
