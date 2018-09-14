@@ -42,7 +42,7 @@ This will show a list of dependencies that should be declared explicitly:
 
 ```
 sbt:example> undeclaredCompileDependencies
-[warn] The project depends on the following libraries for compilation but they not declared in libraryDependencies:
+[warn] The project depends on the following libraries for compilation but they are not declared in libraryDependencies:
 [warn] "com.chuusai" %% "shapeless" % "2.3.3"
 [warn] "com.google.guava" % "guava" % "26.0-jre"
 [warn] "org.typelevel" %% "cats-core" % "1.2.0"
@@ -56,7 +56,7 @@ CI pipeline:
 
 ```
 sbt:example> undeclaredCompileDependenciesTest
-[warn] The project depends on the following libraries for compilation but they not declared in libraryDependencies:
+[warn] The project depends on the following libraries for compilation but they are not declared in libraryDependencies:
 [warn] "com.chuusai" %% "shapeless" % "2.3.3"
 [warn] "com.google.guava" % "guava" % "26.0-jre"
 [warn] "org.typelevel" %% "cats-core" % "1.2.0"
