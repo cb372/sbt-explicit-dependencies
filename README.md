@@ -31,7 +31,6 @@ Add the plugin in `project/plugins.sbt` or as a global plugin in
 `~/.sbt/1.0/plugins/plugins.sbt`:
 
 ```
-resolvers += Resolver.bintrayIvyRepo("cb372", "sbt-plugins”)
 addSbtPlugin("com.github.cb372" % "sbt-explicit-dependencies" % "0.2.1")
 ```
 
