@@ -31,15 +31,16 @@ Add the plugin in `project/plugins.sbt` or as a global plugin in
 `~/.sbt/1.0/plugins/plugins.sbt`:
 
 ```
-addSbtPlugin("com.github.cb372" % "sbt-explicit-dependencies" % "0.1.0")
+resolvers += Resolver.bintrayIvyRepo("cb372", "sbt-plugins”)
+addSbtPlugin("com.github.cb372" % "sbt-explicit-dependencies" % "0.2.1")
 ```
 
 ## How to use
 
 ### Finding accidental use of transitive dependencies
 
-The `undeclaredCompileDependencies` shows a list of dependencies that should be
-declared explicitly:
+The `undeclaredCompileDependencies` task shows a list of dependencies that
+should be declared explicitly:
 
 ```
 sbt:example> undeclaredCompileDependencies
