@@ -1,6 +1,6 @@
 enablePlugins(SbtPlugin)
 
-version := "0.2.1"
+version := "0.2.2"
 scalaVersion := "2.12.6"
 organization := "com.github.cb372"
 description := "An sbt plugin to check that your project does not directly depend on any transitive dependencies for compilation"

@@ -34,6 +34,7 @@ object ExplicitDepsPlugin extends AutoPlugin {
   )
 
   lazy val undeclaredCompileDependenciesTask = Def.task {
+    val projectName = name.value
     val compileAnalysis = compile.in(Compile).value.asInstanceOf[Analysis]
     val libraryDeps = libraryDependencies.value
     val scalaBinaryVer = scalaBinaryVersion.value
@@ -46,10 +47,10 @@ object ExplicitDepsPlugin extends AutoPlugin {
     if (undeclaredCompileDependencies.nonEmpty) {
       val sorted = undeclaredCompileDependencies.toList.sortBy(dep => s"${dep.organization} ${dep.name}")
       log.warn(
-        s"""The project depends on the following libraries for compilation but they are not declared in libraryDependencies:
-          |${sorted.mkString("\n")}""".stripMargin)
+        s"""$projectName >>> The project depends on the following libraries for compilation but they are not declared in libraryDependencies:
+          | - ${sorted.mkString("\n - ")}""".stripMargin)
     } else {
-      log.info("The project explicitly declares all the libraries that it directly depends on for compilation. Good job!")
+      log.info(s"$projectName >>> The project explicitly declares all the libraries that it directly depends on for compilation. Good job!")
     }
 
     undeclaredCompileDependencies
@@ -62,6 +63,7 @@ object ExplicitDepsPlugin extends AutoPlugin {
   }
 
   lazy val unusedCompileDependenciesTask = Def.task {
+    val projectName = name.value
     val compileAnalysis = compile.in(Compile).value.asInstanceOf[Analysis]
     val libraryDeps = libraryDependencies.value
     val scalaBinaryVer = scalaBinaryVersion.value
@@ -74,10 +76,10 @@ object ExplicitDepsPlugin extends AutoPlugin {
     if (unusedCompileDependencies.nonEmpty) {
       val sorted = unusedCompileDependencies.toList.sortBy(dep => s"${dep.organization} ${dep.name}")
       log.warn(
-        s"""The following libraries are declared in libraryDependencies but are not needed for compilation:
-           |${sorted.mkString("\n")}""".stripMargin)
+        s"""$projectName >>> The following libraries are declared in libraryDependencies but are not needed for compilation:
+           | - ${sorted.mkString("\n - ")}""".stripMargin)
     } else {
-      log.info("The project has no unused dependencies declared in libraryDependencies. Good job!")
+      log.info(s"$projectName >>> The project has no unused dependencies declared in libraryDependencies. Good job!")
     }
 
     unusedCompileDependencies
