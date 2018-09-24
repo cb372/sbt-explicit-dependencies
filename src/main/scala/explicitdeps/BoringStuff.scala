@@ -2,8 +2,6 @@ package explicitdeps
 
 import java.io.File
 
-import sbt.util.Logger
-
 import scala.util.control.NonFatal
 import scala.xml.XML
 
