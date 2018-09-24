@@ -27,11 +27,13 @@ all libraries that your code directly depends on for compilation.
 
 ## How to install
 
+[ ![Download](https://api.bintray.com/packages/cb372/sbt-plugins/sbt-explicit-dependencies/images/download.svg) ](https://bintray.com/cb372/sbt-plugins/sbt-explicit-dependencies/_latestVersion)
+
 Add the plugin in `project/plugins.sbt` or as a global plugin in
 `~/.sbt/1.0/plugins/plugins.sbt`:
 
 ```
-addSbtPlugin("com.github.cb372" % "sbt-explicit-dependencies" % "0.2.1")
+addSbtPlugin("com.github.cb372" % "sbt-explicit-dependencies" % "latest version (see badge above)")
 ```
 
 ## How to use
