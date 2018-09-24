@@ -96,7 +96,7 @@ object ExplicitDepsPlugin extends AutoPlugin {
       compileAnalysis.relations.allLibraryDeps
         .filter(_.getName.endsWith(".jar"))
         .filterNot(_.getName == "rt.jar") // Java runtime
-        .filterNot(_.getName == "scala-library.jar")
+        .filterNot(_.getName matches "scala-library.*\\.jar")
 
     val compileDependencies = compileDependencyJarFiles
       .flatMap(BoringStuff.jarFileToDependency(scalaBinaryVersion, log))

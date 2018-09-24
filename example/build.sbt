@@ -1,4 +1,5 @@
 scalaVersion := "2.12.6"
+crossScalaVersions := List("2.11.12", scalaVersion.value)
 name := "example"
 
 libraryDependencies ++= Seq(
