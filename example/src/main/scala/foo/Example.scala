@@ -1,6 +1,7 @@
 package foo
 
 import cats.data._
+import cats.instances.either._
 import shapeless._
 import cats.effect.IO
 import org.http4s.server.blaze._
@@ -21,5 +22,8 @@ object Example {
 
   // depends on Guava (a Java lib with a version containing a dash)
   val hash = com.google.common.hash.Hashing.adler32().hashInt(12345)
+
+  // uses the kind-projector compiler plugin
+  val eitherMonad = cats.Monad[Either[String, ?]]
 
 }

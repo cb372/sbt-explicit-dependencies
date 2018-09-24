@@ -66,7 +66,7 @@ object Logic {
 
   private def getDeclaredCompileDependencies(libraryDependencies: Seq[ModuleID], scalaBinaryVersion: String, log: Logger): Set[Dependency] = {
     val compileConfigLibraryDependencies = libraryDependencies
-      .filter(_.configurations.fold[Boolean](true)(_.contains("compile")))
+      .filter(isCompileDependency)
       .filterNot(_.name == "scala-library")
 
     val declaredCompileDependencies = compileConfigLibraryDependencies
@@ -74,6 +74,18 @@ object Logic {
     log.debug(s"Declared dependencies:\n${declaredCompileDependencies.mkString("\n")}")
 
     declaredCompileDependencies.toSet
+  }
+
+  private def isCompileDependency(moduleID: ModuleID): Boolean = {
+    // Couldn't find any definitive documentation on what format sbt supports for the configuration string,
+    // but the Ivy docs are a helpful reference: https://ant.apache.org/ivy/history/2.3.0/tutorial/conf.html
+    // As far as I can tell, configs are separated by a semicolon with an optional space,
+    // and a single config can be written in two ways:
+    // - "compile", meaning the compile config of this project depends on the default config of the library
+    // - "test->compile", meaning the test config of this project depends on the compile config of the library
+    // So a full config string could be "compile->compile; test->test".
+    // We care whether the compile config of this project has a dependency on any config of the library.
+    moduleID.configurations.fold[Boolean](true)(conf => conf.split("; ?").exists(_.startsWith("compile")))
   }
 
 }
