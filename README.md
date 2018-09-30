@@ -1,5 +1,7 @@
 # sbt-explicit-dependencies
 
+[![Build Status](https://travis-ci.org/cb372/sbt-explicit-dependencies.svg?branch=master)](https://travis-ci.org/cb372/sbt-explicit-dependencies)
+
 An sbt plugin to check that your `libraryDependencies` accurately reflects the
 libraries that your code depends on in order to compile.
 

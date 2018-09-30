@@ -42,3 +42,6 @@ updateVersionInExampleProject := {
   )
   scala.sys.process.Process(gitCommand).!
 }
+
+scriptedLaunchOpts := scriptedLaunchOpts.value ++ Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
+scriptedBufferLog := false
