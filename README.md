@@ -47,12 +47,12 @@ should be declared explicitly:
 
 ```
 sbt:example> undeclaredCompileDependencies
-[warn] The project depends on the following libraries for compilation but they are not declared in libraryDependencies:
-[warn] "com.chuusai" %% "shapeless" % "2.3.3"
-[warn] "com.google.guava" % "guava" % "26.0-jre"
-[warn] "org.typelevel" %% "cats-core" % "1.2.0"
-[warn] "org.typelevel" %% "cats-effect" % "0.10.1"
-[success] Total time: 2 s, completed 14-Sep-2018 12:21:16
+[warn] example >>> The project depends on the following libraries for compilation but they are not declared in libraryDependencies:
+[warn]  - "com.chuusai" %% "shapeless" % "2.3.3"
+[warn]  - "com.google.guava" % "guava" % "26.0-jre"
+[warn]  - "org.typelevel" %% "cats-core" % "1.2.0"
+[warn]  - "org.typelevel" %% "cats-effect" % "0.10.1"
+[success] Total time: 0 s, completed 01-Oct-2018 00:16:31
 ```
 
 There is also a task `undeclaredCompileDependenciesTest` which will fail the
@@ -61,13 +61,13 @@ CI pipeline:
 
 ```
 sbt:example> undeclaredCompileDependenciesTest
-[warn] The project depends on the following libraries for compilation but they are not declared in libraryDependencies:
-[warn] "com.chuusai" %% "shapeless" % "2.3.3"
-[warn] "com.google.guava" % "guava" % "26.0-jre"
-[warn] "org.typelevel" %% "cats-core" % "1.2.0"
-[warn] "org.typelevel" %% "cats-effect" % "0.10.1"
+[warn] example >>> The project depends on the following libraries for compilation but they are not declared in libraryDependencies:
+[warn]  - "com.chuusai" %% "shapeless" % "2.3.3"
+[warn]  - "com.google.guava" % "guava" % "26.0-jre"
+[warn]  - "org.typelevel" %% "cats-core" % "1.2.0"
+[warn]  - "org.typelevel" %% "cats-effect" % "0.10.1"
 [error] (undeclaredCompileDependenciesTest) Failing the build because undeclared dependencies were found
-[error] Total time: 1 s, completed 14-Sep-2018 12:38:23
+[error] Total time: 1 s, completed 01-Oct-2018 00:17:05
 ```
 
 ### Finding unnecessary dependencies
@@ -77,12 +77,12 @@ declared as dependencies but are not actually needed for compilation:
 
 ```
 sbt:example> unusedCompileDependencies
-[warn] The following libraries are declared in libraryDependencies but are not needed for compilation:
-[warn] "com.github.cb372" %% "scalacache-guava" % "0.24.3"
-[warn] "org.http4s" %% "http4s-circe" % "0.18.16"
-[warn] "org.postgresql" % "postgresql" % "42.2.5"
-[warn] "org.tpolecat" %% "doobie-postgres" % "0.5.3"
-[success] Total time: 2 s, completed 14-Sep-2018 16:30:50
+[warn] example >>> The following libraries are declared in libraryDependencies but are not needed for compilation:
+[warn]  - "com.github.cb372" %% "scalacache-guava" % "0.24.3"
+[warn]  - "org.http4s" %% "http4s-circe" % "0.18.16"
+[warn]  - "org.postgresql" % "postgresql" % "42.2.5"
+[warn]  - "org.tpolecat" %% "doobie-postgres" % "0.5.3"
+[success] Total time: 0 s, completed 01-Oct-2018 00:17:34
 ```
 
 This is also a task `unusedCompileDependenciesTest` which will fail the build if
@@ -90,13 +90,13 @@ this list is non-empty. This can be useful as part of a CI pipeline:
 
 ```
 sbt:example> unusedCompileDependenciesTest
-[warn] The following libraries are declared in libraryDependencies but are not needed for compilation:
-[warn] "com.github.cb372" %% "scalacache-guava" % "0.24.3"
-[warn] "org.http4s" %% "http4s-circe" % "0.18.16"
-[warn] "org.postgresql" % "postgresql" % "42.2.5"
-[warn] "org.tpolecat" %% "doobie-postgres" % "0.5.3"
+[warn] example >>> The following libraries are declared in libraryDependencies but are not needed for compilation:
+[warn]  - "com.github.cb372" %% "scalacache-guava" % "0.24.3"
+[warn]  - "org.http4s" %% "http4s-circe" % "0.18.16"
+[warn]  - "org.postgresql" % "postgresql" % "42.2.5"
+[warn]  - "org.tpolecat" %% "doobie-postgres" % "0.5.3"
 [error] (unusedCompileDependenciesTest) Failing the build because unused dependencies were found
-[error] Total time: 1 s, completed 14-Sep-2018 16:36:11
+[error] Total time: 0 s, completed 01-Oct-2018 00:18:00
 ```
 
 ## Example project
