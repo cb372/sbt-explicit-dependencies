@@ -26,7 +26,7 @@ object ExplicitDepsPlugin extends AutoPlugin {
 
   lazy val undeclaredCompileDependenciesTask = Def.task {
     val projectName = name.value
-    val allLibraryDeps = compile.in(Compile).value.asInstanceOf[Analysis].relations.allBinaryDeps.toSet
+    val allLibraryDeps = getAllLibraryDeps(compile.in(Compile).value.asInstanceOf[Analysis])
     val libraryDeps = libraryDependencies.value
     val scalaBinaryVer = scalaBinaryVersion.value
     val log = streams.value.log
@@ -48,7 +48,7 @@ object ExplicitDepsPlugin extends AutoPlugin {
 
   lazy val unusedCompileDependenciesTask = Def.task {
     val projectName = name.value
-    val allLibraryDeps = compile.in(Compile).value.asInstanceOf[Analysis].relations.allBinaryDeps.toSet
+    val allLibraryDeps = getAllLibraryDeps(compile.in(Compile).value.asInstanceOf[Analysis])
     val libraryDeps = libraryDependencies.value
     val scalaBinaryVer = scalaBinaryVersion.value
     val log = streams.value.log
