@@ -15,9 +15,10 @@ object BoringStuff {
    */
   def jarFileToDependency(scalaBinaryVersion: String, log: Logger)(jarFile: File): Option[Dependency] = {
     val dependencyFromPom = findPomFile(jarFile).flatMap(parsePomFile(scalaBinaryVersion, log))
-    val dependencyFromIvy = findIvyFile(jarFile).flatMap(parseIvyFile(scalaBinaryVersion, log))
+    val dependencyFromIvyCache = findIvyFileInIvyCache(jarFile).flatMap(parseIvyFile(scalaBinaryVersion, log))
+    val dependencyFromIvyLocal = findIvyFileInIvyLocal(jarFile).flatMap(parseIvyFile(scalaBinaryVersion, log))
 
-    dependencyFromPom.orElse(dependencyFromIvy)
+    dependencyFromPom.orElse(dependencyFromIvyCache).orElse(dependencyFromIvyLocal)
   }
 
   private def findPomFile(jarFile: File): Option[File] = {
@@ -30,12 +31,18 @@ object BoringStuff {
       None
   }
 
-  private def findIvyFile(jarFile: File): Option[File] = {
+  private def findIvyFileInIvyCache(jarFile: File): Option[File] = {
     // Ivy file should be in the parent directory, with the filename ivy-$version.xml
     val potentialVersions = jarFile.getName.dropRight(4)
       .split('-').tails.filter(_.nonEmpty).toList.map(_.mkString("-")).reverse
     val potentialIvyFiles = potentialVersions.map(version => new File(jarFile.getParentFile.getParentFile, s"ivy-$version.xml"))
     potentialIvyFiles.find(_.exists)
+  }
+
+  private def findIvyFileInIvyLocal(jarFile: File): Option[File] = {
+    // Jar file will be in 'jars' directory. Ivy file should be in the sibling 'ivys' directory, with the filename ivy.xml
+    val ivysDirectory = new File(jarFile.getParentFile.getParentFile, "ivys")
+    Some(new File(ivysDirectory, "ivy.xml")).filter(_.exists)
   }
 
   private def parsePomFile(scalaBinaryVersion: String, log: Logger)(file: File): Option[Dependency] = {
