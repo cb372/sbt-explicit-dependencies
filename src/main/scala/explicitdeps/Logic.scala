@@ -9,12 +9,16 @@ object Logic {
     allLibraryDeps: Set[File],
     libraryDeps: Seq[ModuleID],
     scalaBinaryVer: String,
+    moduleFilter: ModuleFilter,
     log: Logger
   ): Set[Dependency] = {
     val compileDependencies = getCompileDependencies(allLibraryDeps, scalaBinaryVer, log)
     val declaredCompileDependencies = getDeclaredCompileDependencies(libraryDeps, scalaBinaryVer, log)
 
-    val undeclaredCompileDependencies = compileDependencies diff declaredCompileDependencies
+    val undeclaredCompileDependencies =
+      (compileDependencies diff declaredCompileDependencies)
+        .filter(dep => moduleFilter.apply(toModuleID(dep)))
+
     if (undeclaredCompileDependencies.nonEmpty) {
       val sorted = undeclaredCompileDependencies.toList.sortBy(dep => s"${dep.organization} ${dep.name}")
       log.warn(
@@ -32,12 +36,16 @@ object Logic {
     allLibraryDeps: Set[File],
     libraryDeps: Seq[ModuleID],
     scalaBinaryVer: String,
+    moduleFilter: ModuleFilter,
     log: Logger
   ): Set[Dependency] = {
     val compileDependencies = getCompileDependencies(allLibraryDeps, scalaBinaryVer, log)
     val declaredCompileDependencies = getDeclaredCompileDependencies(libraryDeps, scalaBinaryVer, log)
 
-    val unusedCompileDependencies = declaredCompileDependencies diff compileDependencies
+    val unusedCompileDependencies =
+      (declaredCompileDependencies diff compileDependencies)
+        .filter(dep => moduleFilter.apply(toModuleID(dep)))
+
     if (unusedCompileDependencies.nonEmpty) {
       val sorted = unusedCompileDependencies.toList.sortBy(dep => s"${dep.organization} ${dep.name}")
       log.warn(
