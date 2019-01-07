@@ -99,6 +99,22 @@ sbt:example> unusedCompileDependenciesTest
 [error] Total time: 0 s, completed 01-Oct-2018 00:18:00
 ```
 
+### Filtering the results
+
+If the result of either `undeclaredCompileDependencies` or
+`unusedCompileDependencies` contains any dependencies you don't care about, you
+can exclude them using the `undeclaredCompileDependenciesFilter` and
+`unusedCompileDependenciesFilter` settings.
+
+For example:
+
+```
+unusedCompileDependenciesFilter -= moduleFilter("org.scalaz", "scalaz")
+```
+
+Note: If you're filtering things out because you think the plugin is returning
+false-positive results, please open a GitHub issue.
+
 ## Example project
 
 There is an example sbt project in the `example` folder so you can see the
