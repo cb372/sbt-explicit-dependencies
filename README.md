@@ -119,3 +119,12 @@ false-positive results, please open a GitHub issue.
 
 There is an example sbt project in the `example` folder so you can see the
 plugin in action.
+
+### Code Visualization:
+
+Here is a cool visualization of the code evolution
+
+ [![Watch the video](https://img.youtube.com/vi/5CTt2Weg3AM/0.jpg)](https://www.youtube.com/watch?v=5CTt2Weg3AM)
+
+ [https://www.youtube.com/watch?v=5CTt2Weg3AM](https://www.youtube.com/watch?v=5CTt2Weg3AM)
+
