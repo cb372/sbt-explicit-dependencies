@@ -69,7 +69,7 @@ object Logic {
       .flatMap(BoringStuff.jarFileToDependency(scalaBinaryVersion, log))
     log.debug(s"Compile depends on:\n${compileDependencies.mkString("\n")}")
 
-    compileDependencies.toSet
+    compileDependencies
   }
 
   private def getDeclaredCompileDependencies(libraryDependencies: Seq[ModuleID], scalaBinaryVersion: String, log: Logger): Set[Dependency] = {
