@@ -8,6 +8,8 @@ organization := "com.github.cb372"
 description := "An sbt plugin to check that your project does not directly depend on any transitive dependencies for compilation"
 licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
 
+addSbtPlugin("com.dwijnand" % "sbt-compat" % "1.2.6")
+
 releaseCrossBuild := false
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
