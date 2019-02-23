@@ -4,10 +4,10 @@ script: sbt -Dfile.encoding=UTF8 -J-XX:ReservedCodeCacheSize=256M "^^${SBT_VERSI
 
 matrix:
   include:
-  - env: SBT_VERSION="0.13.17"
+  - env: SBT_VERSION="0.13.18"
     scala: 2.10.7
 
-  - env: SBT_VERSION="1.2.3"
+  - env: SBT_VERSION="1.2.8"
     scala: 2.12.6
 
 cache:
