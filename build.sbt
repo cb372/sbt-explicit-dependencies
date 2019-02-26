@@ -8,6 +8,8 @@ organization := "com.github.cb372"
 description := "An sbt plugin to check that your project does not directly depend on any transitive dependencies for compilation"
 licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
 
+// This goes in build.sbt, not in project/plugins.sbt, because we are a plugin depending on another plugin.
+// "It's funky, but it's right." -- @dwijnand
 addSbtPlugin("com.dwijnand" % "sbt-compat" % "1.2.6")
 
 releaseCrossBuild := false
