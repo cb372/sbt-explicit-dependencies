@@ -5,6 +5,8 @@ import java.io.File
 import scala.util.control.NonFatal
 import scala.xml.XML
 
+import sbt.util.Logger
+
 object BoringStuff {
 
   /*

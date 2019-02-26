@@ -2,6 +2,9 @@ package explicitdeps
 
 import java.io.File
 
+import sbt.librarymanagement.ModuleID
+import sbt.util.Logger
+
 object Logic {
 
   def getUndeclaredCompileDependencies(
@@ -69,7 +72,7 @@ object Logic {
       .flatMap(BoringStuff.jarFileToDependency(scalaBinaryVersion, log))
     log.debug(s"Compile depends on:\n${compileDependencies.mkString("\n")}")
 
-    compileDependencies.toSet
+    compileDependencies
   }
 
   private def getDeclaredCompileDependencies(libraryDependencies: Seq[ModuleID], scalaBinaryVersion: String, log: Logger): Set[Dependency] = {
@@ -95,5 +98,12 @@ object Logic {
     // We care whether the compile config of this project has a dependency on any config of the library.
     moduleID.configurations.fold[Boolean](true)(conf => conf.split("; ?").exists(_.startsWith("compile")))
   }
+
+
+  private def toModuleID(dep: Dependency): ModuleID = ModuleID(
+    organization = dep.organization,
+    name = dep.name,
+    revision = dep.version
+  )
 
 }
