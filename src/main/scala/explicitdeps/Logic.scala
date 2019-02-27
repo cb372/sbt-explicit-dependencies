@@ -96,7 +96,7 @@ object Logic {
     // - "test->compile", meaning the test config of this project depends on the compile config of the library
     // So a full config string could be "compile->compile; test->test".
     // We care whether the compile config of this project has a dependency on any config of the library.
-    moduleID.configurations.fold[Boolean](true)(conf => conf.split("; ?").exists(_.startsWith("compile")))
+    moduleID.configurations.fold[Boolean](true)(conf => conf.split("; ?").exists(c => c.startsWith("compile") || c.startsWith("provided")))
   }
 
 
