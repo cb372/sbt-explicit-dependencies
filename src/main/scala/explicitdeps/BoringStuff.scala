@@ -72,9 +72,8 @@ object BoringStuff {
   }
 
   private def parseIvyFile(scalaBinaryVersion: String, log: Logger)(file: File): Option[Dependency] = {
-    val xml = XML.loadFile(file)
-
     try {
+      val xml = XML.loadFile(file)
       val organization = xml \ "info" \@ "organisation"
       val rawName = xml \ "info" \@ "module"
       val version = xml \ "info" \@ "revision"
