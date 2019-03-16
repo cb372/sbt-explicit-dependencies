@@ -48,9 +48,8 @@ object BoringStuff {
   }
 
   private def parsePomFile(scalaBinaryVersion: String, log: Logger)(file: File): Option[Dependency] = {
-    val xml = XML.loadFile(file)
-
     try {
+      val xml = XML.loadFile(file)
       val organization = {
         val groupId = (xml \ "groupId").text
         if (groupId.nonEmpty) groupId else (xml \ "parent" \ "groupId").text
