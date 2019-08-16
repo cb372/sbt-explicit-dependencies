@@ -47,6 +47,7 @@ updateVersionInExampleProject := {
 scriptedLaunchOpts ++= Seq(
   "-Xmx1024M",
   "-Dplugin.version=" + version.value,
+  "-Dscala.version=2.12.9",
   s"-Dsbt.boot.directory=${file(sys.props("user.home")) / ".sbt" / "boot"}"
 )
 scriptedBufferLog := false
