@@ -44,5 +44,9 @@ updateVersionInExampleProject := {
   scala.sys.process.Process(gitCommand).!
 }
 
-scriptedLaunchOpts := scriptedLaunchOpts.value ++ Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
+scriptedLaunchOpts ++= Seq(
+  "-Xmx1024M",
+  "-Dplugin.version=" + version.value,
+  s"-Dsbt.boot.directory=${file(sys.props("user.home")) / ".sbt" / "boot"}"
+)
 scriptedBufferLog := false
