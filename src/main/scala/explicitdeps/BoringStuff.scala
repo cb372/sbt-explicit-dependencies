@@ -35,8 +35,9 @@ object BoringStuff {
 
   private def findIvyFileInIvyCache(jarFile: File): Option[File] = {
     // Ivy file should be in the parent directory, with the filename ivy-$version.xml
-    val potentialVersions = jarFile.getName.dropRight(4)
-      .split('-').tails.filter(_.nonEmpty).toList.map(_.mkString("-")).reverse
+    val artifactVersion = jarFile.getName.dropRight(4).split('-').tail
+    val potentialVersions = (artifactVersion.tails.toList.reverse ++ artifactVersion.inits.toList.tail)
+      .filter(_.nonEmpty).map(_.mkString("-"))
     val potentialIvyFiles = potentialVersions.map(version => new File(jarFile.getParentFile.getParentFile, s"ivy-$version.xml"))
     potentialIvyFiles.find(_.exists)
   }
