@@ -1,4 +1,4 @@
-scalaVersion := "2.12.8"
+scalaVersion := sys.props("scala.version")
 crossScalaVersions := Seq("2.11.12", scalaVersion.value)
 libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-free" % "1.4.0",
