@@ -1,7 +1,7 @@
 import ReleaseTransformations._
 
 enablePlugins(SbtPlugin)
-crossSbtVersions := Seq("0.13.18", "1.2.8")
+crossSbtVersions := Seq("0.13.18", "1.3.0")
 
 scalaVersion := "2.12.9"
 organization := "com.github.cb372"
