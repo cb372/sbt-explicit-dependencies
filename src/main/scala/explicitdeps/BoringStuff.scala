@@ -25,12 +25,10 @@ object BoringStuff {
 
   private def findPomFile(jarFile: File): Option[File] = {
     // pom file should be in the same directory as the jar, with the same filename but a .pom extension
-    val filename = jarFile.getName.replace(".jar", ".pom")
-    val pomFile = new File(jarFile.getParentFile, filename)
-    if (pomFile.exists())
-      Some(pomFile)
-    else
-      None
+    val filenames = jarFile.getName.dropRight(4).split('-').inits
+      .filter(_.nonEmpty).map(_.mkString("-") + ".pom").toList
+    val pomFiles = filenames.map(filename => new File(jarFile.getParentFile, filename))
+    pomFiles.find(_.exists)
   }
 
   private def findIvyFileInIvyCache(jarFile: File): Option[File] = {
