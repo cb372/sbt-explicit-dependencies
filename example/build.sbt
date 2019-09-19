@@ -1,4 +1,4 @@
-scalaVersion := "2.12.8"
+scalaVersion := "2.12.10"
 crossScalaVersions := List("2.11.12", scalaVersion.value)
 name := "example"
 
