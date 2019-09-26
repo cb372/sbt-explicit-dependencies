@@ -8,7 +8,7 @@ matrix:
     scala: 2.10.7
 
   - env: SBT_VERSION="1.2.8"
-    scala: 2.12.8
+    scala: 2.12.10
 
   - env: SBT_VERSION="1.3.2"
     scala: 2.12.8

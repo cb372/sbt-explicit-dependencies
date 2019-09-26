@@ -3,7 +3,7 @@ import ReleaseTransformations._
 enablePlugins(SbtPlugin)
 crossSbtVersions := Seq("0.13.18", "1.2.8", "1.3.2")
 
-scalaVersion := "2.12.9"
+scalaVersion := "2.12.10"
 organization := "com.github.cb372"
 description := "An sbt plugin to check that your project does not directly depend on any transitive dependencies for compilation"
 licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
@@ -47,7 +47,7 @@ updateVersionInExampleProject := {
 scriptedLaunchOpts ++= Seq(
   "-Xmx1024M",
   "-Dplugin.version=" + version.value,
-  "-Dscala.version=2.12.9",
+  "-Dscala.version=2.12.10",
   s"-Dsbt.boot.directory=${file(sys.props("user.home")) / ".sbt" / "boot"}"
 )
 scriptedBufferLog := false
