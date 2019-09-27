@@ -1,7 +1,9 @@
 import ReleaseTransformations._
 
 enablePlugins(SbtPlugin)
-crossSbtVersions := Seq("0.13.18", "1.2.8", "1.3.2")
+val latestSbt_0_13_version = "0.13.18"
+val latestSbt_1_x_version = "1.3.2"
+crossSbtVersions := Seq(latestSbt_0_13_version, "1.2.8", latestSbt_1_x_version)
 
 scalaVersion := "2.12.10"
 organization := "com.github.cb372"
@@ -21,7 +23,8 @@ releaseProcess := Seq[ReleaseStep](
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
-  releaseStepCommandAndRemaining("^ publish"),
+  releaseStepCommandAndRemaining(s"^^$latestSbt_0_13_version publish"),
+  releaseStepCommandAndRemaining(s"^^$latestSbt_1_x_version publish"),
   releaseStepTask(updateVersionInExampleProject),
   setNextVersion,
   commitNextVersion,
