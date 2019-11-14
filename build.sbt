@@ -8,6 +8,7 @@ crossSbtVersions := Seq(latestSbt_0_13_version, "1.2.8", latestSbt_1_x_version)
 scalaVersion := "2.12.10"
 organization := "com.github.cb372"
 description := "An sbt plugin to check that your project does not directly depend on any transitive dependencies for compilation"
+homepage := Some(url("https://github.com/cb372/sbt-explicit-dependencies"))
 licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
 
 // This goes in build.sbt, not in project/plugins.sbt, because we are a plugin depending on another plugin.
