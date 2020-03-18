@@ -5,7 +5,7 @@ val latestSbt_0_13_version = "0.13.18"
 val latestSbt_1_x_version = "1.3.2"
 crossSbtVersions := Seq(latestSbt_0_13_version, "1.2.8", latestSbt_1_x_version)
 
-scalaVersion := "2.12.10"
+scalaVersion := "2.12.11"
 organization := "com.github.cb372"
 description := "An sbt plugin to check that your project does not directly depend on any transitive dependencies for compilation"
 homepage := Some(url("https://github.com/cb372/sbt-explicit-dependencies"))
@@ -51,7 +51,7 @@ updateVersionInExampleProject := {
 scriptedLaunchOpts ++= Seq(
   "-Xmx1024M",
   "-Dplugin.version=" + version.value,
-  "-Dscala.version=2.12.10",
+  "-Dscala.version=2.12.11",
   s"-Dsbt.boot.directory=${file(sys.props("user.home")) / ".sbt" / "boot"}"
 )
 scriptedBufferLog := false
