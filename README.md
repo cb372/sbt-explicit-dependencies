@@ -115,6 +115,35 @@ unusedCompileDependenciesFilter -= moduleFilter("org.scalaz", "scalaz")
 Note: If you're filtering things out because you think the plugin is returning
 false-positive results, please open a GitHub issue.
 
+## Debugging
+
+You can pass `-debug` flag to sbt or set logLevel to debug to understand how the plugin computes compile depndencies
+
+```
+sbt:example> set logLevel := Level.Debug
+sbt:example> unusedCompileDependencies
+...
+[debug] Source to library relations:
+[debug]   sbt-explicit-dependencies/example/src/main/scala/foo/MyCaseClass.scala -> /Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/typelevel/cats-effect_2.12/0.10.1/cats-effect_2.12-0.10.1.jar
+[debug]   sbt-explicit-dependencies/example/src/main/scala/foo/Example.scala -> /Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/typelevel/cats-core_2.12/1.2.0/cats-core_2.12-1.2.0.jar
+...
+[debug] Library dependencies:
+[debug]   /Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/typelevel/cats-effect_2.12/0.10.1/cats-effect_2.12-0.10.1.jar
+[debug]   /Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/typelevel/cats-core_2.12/1.2.0/cats-core_2.12-1.2.0.jar
+...
+[debug] jarFile: cats-effect_2.12-0.10.1.jar -> "org.typelevel" %% "cats-effect" % "0.10.1"
+[debug] jarFile: cats-core_2.12-1.2.0.jar -> "org.typelevel" %% "cats-core" % "1.2.0"
+...
+[debug] Compile depends on:
+[debug]   "org.typelevel" %% "cats-effect" % "0.10.1"
+[debug]   "org.typelevel" %% "cats-core" % "1.2.0"
+...
+[debug] Declared dependencies:
+[debug]   "org.http4s" %% "http4s-blaze-server" % "0.18.16"
+[debug]   "org.http4s" %% "http4s-circe" % "0.18.16"
+...
+```
+
 ## Example project
 
 There is an example sbt project in the `example` folder so you can see the
