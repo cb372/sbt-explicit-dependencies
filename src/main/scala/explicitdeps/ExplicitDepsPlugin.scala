@@ -36,12 +36,12 @@ object ExplicitDepsPlugin extends AutoPlugin {
   )
 
   lazy val undeclaredCompileDependenciesTask = Def.task {
+    val log = streams.value.log
     val projectName = name.value
-    val allLibraryDeps = getAllLibraryDeps(compile.in(Compile).value.asInstanceOf[Analysis])
+    val allLibraryDeps = getAllLibraryDeps(compile.in(Compile).value.asInstanceOf[Analysis], log)
     val libraryDeps = libraryDependencies.value
     val scalaBinaryVer = scalaBinaryVersion.value
     val filter = undeclaredCompileDependenciesFilter.value
-    val log = streams.value.log
 
     Logic.getUndeclaredCompileDependencies(
       projectName,
@@ -60,12 +60,12 @@ object ExplicitDepsPlugin extends AutoPlugin {
   }
 
   lazy val unusedCompileDependenciesTask = Def.task {
+    val log = streams.value.log
     val projectName = name.value
-    val allLibraryDeps = getAllLibraryDeps(compile.in(Compile).value.asInstanceOf[Analysis])
+    val allLibraryDeps = getAllLibraryDeps(compile.in(Compile).value.asInstanceOf[Analysis], log)
     val libraryDeps = libraryDependencies.value
     val scalaBinaryVer = scalaBinaryVersion.value
     val filter = unusedCompileDependenciesFilter.value
-    val log = streams.value.log
 
     Logic.getUnusedCompileDependencies(
       projectName,
