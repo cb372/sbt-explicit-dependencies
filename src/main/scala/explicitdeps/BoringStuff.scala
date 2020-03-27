@@ -20,7 +20,9 @@ object BoringStuff {
     val dependencyFromIvyCache = findIvyFileInIvyCache(jarFile).flatMap(parseIvyFile(scalaBinaryVersion, log))
     val dependencyFromIvyLocal = findIvyFileInIvyLocal(jarFile).flatMap(parseIvyFile(scalaBinaryVersion, log))
 
-    dependencyFromPom.orElse(dependencyFromIvyCache).orElse(dependencyFromIvyLocal)
+    val dependencyOpt = dependencyFromPom.orElse(dependencyFromIvyCache).orElse(dependencyFromIvyLocal)
+    log.debug(s"jarFile: ${jarFile.getName} -> ${dependencyOpt.mkString}")
+    dependencyOpt
   }
 
   private def findPomFile(jarFile: File): Option[File] = {

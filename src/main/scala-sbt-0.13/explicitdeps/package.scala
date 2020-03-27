@@ -6,8 +6,14 @@ package object explicitdeps {
 
   val defaultModuleFilter: ModuleFilter = sbt.DependencyFilter.moduleFilter()
 
-  def getAllLibraryDeps(analysis: Analysis): Set[java.io.File] =
-    analysis.relations.allBinaryDeps.toSet
+  def getAllLibraryDeps(analysis: Analysis, log: sbt.util.Logger): Set[java.io.File] = {
+    log.debug(
+      s"Source to library relations:\n${analysis.relations.binaryDep.all.map(r => s"  ${r._1} -> ${r._2}").mkString("\n")}"
+    )
+    val allLibraryDeps = analysis.relations.allBinaryDeps.toSet
+    log.debug(s"Library dependencies:\n${allLibraryDeps.mkString("  ", "\n  ", "")}")
+    allLibraryDeps
+  }
 
   implicit class NodeSeqOps(nodeSeq: scala.xml.NodeSeq) {
 

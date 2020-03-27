@@ -70,7 +70,7 @@ object Logic {
 
     val compileDependencies = compileDependencyJarFiles
       .flatMap(BoringStuff.jarFileToDependency(scalaBinaryVersion, log))
-    log.debug(s"Compile depends on:\n${compileDependencies.mkString("\n")}")
+    log.debug(s"Compile depends on:\n${compileDependencies.mkString("  ", "\n  ", "")}")
 
     compileDependencies
   }
@@ -82,7 +82,7 @@ object Logic {
 
     val declaredCompileDependencies = compileConfigLibraryDependencies
       .map(moduleId => Dependency(moduleId.organization, moduleId.name, moduleId.revision, moduleId.crossVersion.isInstanceOf[Binary]))
-    log.debug(s"Declared dependencies:\n${declaredCompileDependencies.mkString("\n")}")
+    log.debug(s"Declared dependencies:\n${declaredCompileDependencies.mkString("  ", "\n  ", "")}")
 
     declaredCompileDependencies.toSet
   }
