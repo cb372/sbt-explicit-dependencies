@@ -22,10 +22,16 @@ val nel = cats.data.NonEmptyList.of(1, 2, 3)
 
 then this plugin will warn you about that fact.
 
+The plugin can also warn you if you have anything in your `libraryDependencies`
+that you're not actually using.
+
 ## Why?
 
 If you want to avoid dependency hell, it's good practice to explicitly declare
 all libraries that your code directly depends on for compilation.
+
+If you want to keep your deployment artifacts small, you don't want to declare
+dependencies on any libraries you don't actually need.
 
 ## How to install
 
