@@ -105,6 +105,14 @@ sbt:example> unusedCompileDependenciesTest
 [error] Total time: 0 s, completed 01-Oct-2018 00:18:00
 ```
 
+#### Runtime Dependencies
+
+Some libraries need to be added to the runtime classpath, but aren't required for compilation. (Logging libraries that implement the SLF4J framework are a common example.) These libraries should be added using the `Runtime` configuration so they're added to `Runtime / dependencyClasspath` and not `Compile / dependencyClasspath`, and will be automatically excluded from consideration by this plugin. For example:
+
+```scala
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3" % Runtime
+```
+
 ### Filtering the results
 
 If the result of either `undeclaredCompileDependencies` or
