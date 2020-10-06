@@ -6,11 +6,15 @@ package object explicitdeps {
 
   val defaultModuleFilter: ModuleFilter = sbt.librarymanagement.DependencyFilter.moduleFilter()
 
-  def getAllLibraryDeps(analysis: Analysis, log: sbt.util.Logger): Set[java.io.File] = {
+  def getAllLibraryDeps(analysis: Analysis, csrCacheDirectoryValue: String, log: sbt.util.Logger): Set[java.io.File] = {
     log.debug(
       s"Source to library relations:\n${analysis.relations.libraryDep.all.map(r => s"  ${r._1} -> ${r._2}").mkString("\n")}"
     )
-    val allLibraryDeps = analysis.relations.allLibraryDeps.toSet
+    val allLibraryDeps = analysis.relations.allLibraryDeps
+      .map(_.id())
+      .map(_.replaceAllLiterally("${CSR_CACHE}", csrCacheDirectoryValue))
+      .map(path => new java.io.File(path))
+      .toSet
     log.debug(s"Library dependencies:\n${allLibraryDeps.mkString("  ", "\n  ", "")}")
     allLibraryDeps
   }
