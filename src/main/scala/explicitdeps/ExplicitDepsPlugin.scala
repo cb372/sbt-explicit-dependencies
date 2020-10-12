@@ -35,11 +35,23 @@ object ExplicitDepsPlugin extends AutoPlugin {
     unusedCompileDependenciesFilter := defaultModuleFilter
   )
 
+  // Evaluate "csrCacheDirectory" setting which is present only in sbt 1.3.0 or newer
+  private lazy val csrCacheDirectoryValueTask = Def.task {
+    val extracted: Extracted = Project.extract(state.value)
+    val settings = extracted.session.original
+    settings.find(_.key.key.label == "csrCacheDirectory") match {
+      case Some(csrCacheDirectorySetting) =>
+        val csrCacheDirectoryValue = csrCacheDirectorySetting.init.evaluate(extracted.structure.data).toString
+        Some(csrCacheDirectoryValue)
+      case _ => None
+    }
+  }
+
   lazy val undeclaredCompileDependenciesTask = Def.task {
     val log = streams.value.log
     val projectName = name.value
-    val csrCacheDirectoryValue = csrCacheDirectory.value.toPath.toString
-    val allLibraryDeps = getAllLibraryDeps(compile.in(Compile).value.asInstanceOf[Analysis], csrCacheDirectoryValue, log)
+    val csrCacheDirectoryValueOpt = csrCacheDirectoryValueTask.value
+    val allLibraryDeps = getAllLibraryDeps(compile.in(Compile).value.asInstanceOf[Analysis], log)(csrCacheDirectoryValueOpt)
     val libraryDeps = libraryDependencies.value
     val scalaBinaryVer = scalaBinaryVersion.value
     val filter = undeclaredCompileDependenciesFilter.value
@@ -63,8 +75,8 @@ object ExplicitDepsPlugin extends AutoPlugin {
   lazy val unusedCompileDependenciesTask = Def.task {
     val log = streams.value.log
     val projectName = name.value
-    val csrCacheDirectoryValue = csrCacheDirectory.value.toPath.toString
-    val allLibraryDeps = getAllLibraryDeps(compile.in(Compile).value.asInstanceOf[Analysis], csrCacheDirectoryValue, log)
+    val csrCacheDirectoryValueOpt = csrCacheDirectoryValueTask.value
+    val allLibraryDeps = getAllLibraryDeps(compile.in(Compile).value.asInstanceOf[Analysis], log)(csrCacheDirectoryValueOpt)
     val libraryDeps = libraryDependencies.value
     val scalaBinaryVer = scalaBinaryVersion.value
     val filter = unusedCompileDependenciesFilter.value
