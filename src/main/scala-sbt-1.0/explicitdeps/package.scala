@@ -17,8 +17,10 @@ package object explicitdeps {
     typeTag match {
       // sbt 1.4.0 or newer
       case "xsbti.VirtualFileRef" =>
-        // TODO: Use reflection to invoke id() function
-        val path = x.asInstanceOf[xsbti.VirtualFile].id().replaceAllLiterally("${CSR_CACHE}", csrCacheDirectoryValueOpt.mkString)
+        val reflected = rm.reflect(x)
+        val idMethod = reflected.symbol.typeSignature.member(ru.TermName("id")).asMethod
+        val id = reflected.reflectMethod(idMethod)().toString
+        val path = id.replaceAllLiterally("${CSR_CACHE}", csrCacheDirectoryValueOpt.mkString)
         new java.io.File(path)
       // sbt 1.3.x or older
       case "java.io.File" =>
