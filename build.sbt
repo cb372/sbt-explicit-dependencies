@@ -2,8 +2,8 @@ import ReleaseTransformations._
 
 enablePlugins(SbtPlugin)
 val latestSbt_0_13_version = "0.13.18"
-val latestSbt_1_x_version = "1.3.8"
-crossSbtVersions := Seq(latestSbt_0_13_version, "1.2.8", latestSbt_1_x_version)
+val latestSbt_1_x_version = "1.4.0"
+crossSbtVersions := Seq(latestSbt_0_13_version, "1.2.8", "1.3.13", latestSbt_1_x_version)
 
 scalaVersion := "2.12.11"
 organization := "com.github.cb372"
