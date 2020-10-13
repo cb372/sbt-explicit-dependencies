@@ -18,7 +18,7 @@ package object explicitdeps {
       // sbt 1.4.0 or newer
       case "xsbti.VirtualFileRef" =>
         val reflected = rm.reflect(x)
-        val idMethod = reflected.symbol.typeSignature.member(ru.TermName("id")).asMethod
+        val idMethod = reflected.symbol.typeSignature.member(ru.TermName("id")).asTerm.alternatives.head.asMethod
         val id = reflected.reflectMethod(idMethod)().toString
         val path = id.replaceAllLiterally("${CSR_CACHE}", csrCacheDirectoryValueOpt.mkString)
         new java.io.File(path)
