@@ -6,10 +6,10 @@ package object explicitdeps {
 
   val defaultModuleFilter: ModuleFilter = sbt.librarymanagement.DependencyFilter.moduleFilter()
 
-  private def toFile(x: AnyRef, className: String, csrCacheDirectoryValueOpt: Option[String]): java.io.File = {
-    if (className.contains("VirtualFile")) {
+  private def toFile(x: AnyRef, csrCacheDirectoryValueOpt: Option[String]): java.io.File = {
+    if (x.getClass.getSimpleName.contains("VirtualFile")) {
       // sbt 1.4.0 or newer
-      val id = x.toString
+      val id = x.getClass.getMethod("id").invoke(x).toString
       val path = id.replaceAllLiterally("${CSR_CACHE}", csrCacheDirectoryValueOpt.mkString)
       new java.io.File(path)
     } else {
@@ -22,10 +22,9 @@ package object explicitdeps {
     log.debug(
       s"Source to library relations:\n${analysis.relations.libraryDep.all.map(r => s"  ${r._1} -> ${r._2}").mkString("\n")}"
     )
-    val allLibraryDeps = analysis.relations.allLibraryDeps.asInstanceOf[Set[AnyRef]].map { x =>
-      val className = x.getClass.getSimpleName
-      toFile(x, className, csrCacheDirectoryValueOpt)
-    }.toSet
+    val allLibraryDeps = analysis.relations.allLibraryDeps.asInstanceOf[Set[AnyRef]]
+      .map(x => toFile(x, csrCacheDirectoryValueOpt))
+      .toSet
     log.debug(s"Library dependencies:\n${allLibraryDeps.mkString("  ", "\n  ", "")}")
     allLibraryDeps
   }
