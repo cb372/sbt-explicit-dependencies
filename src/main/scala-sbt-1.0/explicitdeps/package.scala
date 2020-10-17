@@ -1,5 +1,3 @@
-import scala.reflect.api.JavaUniverse
-
 package object explicitdeps {
 
   type Binary = sbt.librarymanagement.Binary
@@ -8,23 +6,15 @@ package object explicitdeps {
 
   val defaultModuleFilter: ModuleFilter = sbt.librarymanagement.DependencyFilter.moduleFilter()
 
-  private val ru: JavaUniverse = scala.reflect.runtime.universe
-  private val rm: ru.Mirror = ru.runtimeMirror(getClass.getClassLoader)
-
-  private def getTypeTag[T: ru.TypeTag](obj: T) = ru.typeTag[T]
-
-  private def toFile(x: AnyRef, typeTag: String, csrCacheDirectoryValueOpt: Option[String]): java.io.File = {
-    typeTag match {
+  private def toFile(x: AnyRef, className: String, csrCacheDirectoryValueOpt: Option[String]): java.io.File = {
+    if (className.contains("VirtualFile")) {
       // sbt 1.4.0 or newer
-      case "xsbti.VirtualFileRef" =>
-        val reflected = rm.reflect(x)
-        val idMethod = reflected.symbol.typeSignature.member(ru.TermName("id")).asTerm.alternatives.head.asMethod
-        val id = reflected.reflectMethod(idMethod)().toString
-        val path = id.replaceAllLiterally("${CSR_CACHE}", csrCacheDirectoryValueOpt.mkString)
-        new java.io.File(path)
+      val id = x.toString
+      val path = id.replaceAllLiterally("${CSR_CACHE}", csrCacheDirectoryValueOpt.mkString)
+      new java.io.File(path)
+    } else {
       // sbt 1.3.x or older
-      case "java.io.File" =>
-        x.asInstanceOf[java.io.File]
+      x.asInstanceOf[java.io.File]
     }
   }
 
@@ -32,9 +22,9 @@ package object explicitdeps {
     log.debug(
       s"Source to library relations:\n${analysis.relations.libraryDep.all.map(r => s"  ${r._1} -> ${r._2}").mkString("\n")}"
     )
-    val allLibraryDeps = analysis.relations.allLibraryDeps.map { x =>
-      val typeTag = getTypeTag(x).tpe.toString
-      toFile(x, typeTag, csrCacheDirectoryValueOpt)
+    val allLibraryDeps = analysis.relations.allLibraryDeps.asInstanceOf[Set[AnyRef]].map { x =>
+      val className = x.getClass.getSimpleName
+      toFile(x, className, csrCacheDirectoryValueOpt)
     }.toSet
     log.debug(s"Library dependencies:\n${allLibraryDeps.mkString("  ", "\n  ", "")}")
     allLibraryDeps
