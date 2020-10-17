@@ -1,9 +1,18 @@
 import ReleaseTransformations._
 
 enablePlugins(SbtPlugin)
-val latestSbt_0_13_version = "0.13.18"
-val latestSbt_1_x_version = "1.4.0"
-crossSbtVersions := Seq(latestSbt_0_13_version, "1.2.8", "1.3.13", latestSbt_1_x_version)
+
+val latestSbt_0_13_x_version = "0.13.18"
+val latestSbt_1_2_x_version = "1.2.8"
+val latestSbt_1_3_x_version = "1.3.13"
+val latestSbt_1_4_x_version = "1.4.0"
+
+crossSbtVersions := Seq(
+  latestSbt_0_13_x_version,
+  latestSbt_1_2_x_version,
+  latestSbt_1_3_x_version,
+  latestSbt_1_4_x_version
+)
 
 scalaVersion := "2.12.11"
 organization := "com.github.cb372"
@@ -24,8 +33,8 @@ releaseProcess := Seq[ReleaseStep](
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
-  releaseStepCommandAndRemaining(s"^^$latestSbt_0_13_version publish"),
-  releaseStepCommandAndRemaining(s"^^$latestSbt_1_x_version publish"),
+  releaseStepCommandAndRemaining(s"^^$latestSbt_0_13_x_version publish"),
+  releaseStepCommandAndRemaining(s"^^$latestSbt_1_3_x_version publish"), // Note: if we publish with 1.4.0, the plugin will only work with 1.4.x
   releaseStepTask(updateVersionInExampleProject),
   setNextVersion,
   commitNextVersion,
