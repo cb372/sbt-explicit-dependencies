@@ -6,8 +6,8 @@ package object explicitdeps {
 
   val defaultModuleFilter: ModuleFilter = sbt.DependencyFilter.moduleFilter()
 
-  // csrCacheDirectoryValueOpt is unused and only present for forward compatibility
-  def getAllLibraryDeps(analysis: Analysis, log: sbt.util.Logger)(csrCacheDirectoryValueOpt: Option[String]): Set[java.io.File] = {
+  // csrCacheDirectoryValueOpt, baseDirectoryValue are unused and are only present for forward compatibility
+  def getAllLibraryDeps(analysis: Analysis, log: sbt.util.Logger)(csrCacheDirectoryValueOpt: Option[String], baseDirectoryValue: String): Set[java.io.File] = {
     log.debug(
       s"Source to library relations:\n${analysis.relations.binaryDep.all.map(r => s"  ${r._1} -> ${r._2}").mkString("\n")}"
     )
