@@ -1,6 +1,6 @@
 language: scala
 jdk: openjdk8
-script: sbt -Dfile.encoding=UTF8 -J-XX:ReservedCodeCacheSize=256M "^^${SBT_VERSION}" scripted ${GROUPS}
+script: sbt -Dfile.encoding=UTF8 -J-XX:ReservedCodeCacheSize=256M "^^${SBT_VERSION}" "scripted ${GROUPS}"
 
 matrix:
   include:
