@@ -67,6 +67,10 @@ object Logic {
         .filter(_.getName.endsWith(".jar"))
         .filterNot(_.getName == "rt.jar") // Java runtime
         .filterNot(_.getName matches "scala-library.*\\.jar")
+        .filterNot(_.getName matches "scalajs-library.*\\.jar")
+        .filterNot(_.getName matches "scala3-library.*\\.jar")
+
+
 
     val compileDependencies = compileDependencyJarFiles
       .flatMap(BoringStuff.jarFileToDependency(scalaBinaryVersion, log))
@@ -79,6 +83,9 @@ object Logic {
     val compileConfigLibraryDependencies = libraryDependencies
       .filter(isCompileDependency)
       .filterNot(_.name == "scala-library")
+      .filterNot(_.name == "scalajs-library")
+      .filterNot(_.name == "scala3-library")
+
 
     val declaredCompileDependencies = compileConfigLibraryDependencies
       .map(moduleId => Dependency(moduleId.organization, moduleId.name, moduleId.revision, moduleId.crossVersion.isInstanceOf[Binary]))
