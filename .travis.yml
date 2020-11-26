@@ -1,19 +1,23 @@
 language: scala
 jdk: openjdk8
-script: sbt -Dfile.encoding=UTF8 -J-XX:ReservedCodeCacheSize=256M "^^${SBT_VERSION}" scripted
+script: sbt -Dfile.encoding=UTF8 -J-XX:ReservedCodeCacheSize=256M "^^${SBT_VERSION}" scripted ${GROUPS}
 
 matrix:
   include:
   - env: SBT_VERSION="0.13.18"
+    env: GROUPS="basic/*"
     scala: 2.10.7
 
   - env: SBT_VERSION="1.2.8"
+    env: GROUPS="basic/*"
     scala: 2.12.11
 
   - env: SBT_VERSION="1.3.13"
+    env: GROUPS="basic/* 1.3+/*"
     scala: 2.12.11
 
   - env: SBT_VERSION="1.4.0"
+    env: GROUPS="basic/* 1.3+/*"
     scala: 2.12.11
 
 cache:
