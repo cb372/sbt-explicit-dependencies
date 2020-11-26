@@ -4,7 +4,6 @@ import java.io.File
 
 import sbt.librarymanagement.ModuleID
 import sbt.util.Logger
-import sbt.librarymanagement.Full
 
 object Logic {
 
