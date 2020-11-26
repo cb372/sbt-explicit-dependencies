@@ -7,6 +7,11 @@ import scala.xml.XML
 
 import sbt.util.Logger
 
+case class ScalaVersion(
+  binary: String,
+  full: String
+)
+
 object BoringStuff {
 
   /*
@@ -15,13 +20,14 @@ object BoringStuff {
   We need to reverse-engineer this into a "dependency" containing info about
   the organisation, module name and version.
    */
-  def jarFileToDependency(scalaBinaryVersion: String, log: Logger)(jarFile: File): Option[Dependency] = {
-    val dependencyFromPom = findPomFile(jarFile).flatMap(parsePomFile(scalaBinaryVersion, log))
-    val dependencyFromIvyCache = findIvyFileInIvyCache(jarFile).flatMap(parseIvyFile(scalaBinaryVersion, log))
-    val dependencyFromIvyLocal = findIvyFileInIvyLocal(jarFile).flatMap(parseIvyFile(scalaBinaryVersion, log))
+  def jarFileToDependency(scalaVersion: ScalaVersion, log: Logger)(jarFile: File): Option[Dependency] = {
+    val dependencyFromPom = findPomFile(jarFile).flatMap(parsePomFile(scalaVersion, log))
+    val dependencyFromIvyCache = findIvyFileInIvyCache(jarFile).flatMap(parseIvyFile(scalaVersion, log))
+    val dependencyFromIvyLocal = findIvyFileInIvyLocal(jarFile).flatMap(parseIvyFile(scalaVersion, log))
 
     val dependencyOpt = dependencyFromPom.orElse(dependencyFromIvyCache).orElse(dependencyFromIvyLocal)
     log.debug(s"jarFile: ${jarFile.getName} -> ${dependencyOpt.mkString}")
+
     dependencyOpt
   }
 
@@ -48,7 +54,7 @@ object BoringStuff {
     Some(new File(ivysDirectory, "ivy.xml")).filter(_.exists)
   }
 
-  private def parsePomFile(scalaBinaryVersion: String, log: Logger)(file: File): Option[Dependency] = {
+  private def parsePomFile(scalaVersion: ScalaVersion, log: Logger)(file: File): Option[Dependency] = {
     try {
       val xml = XML.loadFile(file)
       val organization = {
@@ -61,7 +67,7 @@ object BoringStuff {
       // We use the parent dir to get the version because it's sometimes not present in the pom file
       val version = file.getParentFile.getName
 
-      val (name, crossVersion) = parseModuleName(scalaBinaryVersion)(rawName)
+      val (name, crossVersion) = parseModuleName(scalaVersion)(rawName)
 
       Some(Dependency(organization, name, version, crossVersion))
     } catch {
@@ -71,14 +77,14 @@ object BoringStuff {
     }
   }
 
-  private def parseIvyFile(scalaBinaryVersion: String, log: Logger)(file: File): Option[Dependency] = {
+  private def parseIvyFile(scalaVersion: ScalaVersion, log: Logger)(file: File): Option[Dependency] = {
     try {
       val xml = XML.loadFile(file)
       val organization = xml \ "info" \@ "organisation"
       val rawName = xml \ "info" \@ "module"
       val version = xml \ "info" \@ "revision"
 
-      val (name, crossVersion) = parseModuleName(scalaBinaryVersion)(rawName)
+      val (name, crossVersion) = parseModuleName(scalaVersion)(rawName)
 
       Some(Dependency(organization, name, version, crossVersion))
     } catch {
@@ -88,9 +94,11 @@ object BoringStuff {
     }
   }
 
-  private def parseModuleName(scalaBinaryVersion: String)(rawName: String): (String, Boolean) =
-    if (rawName.endsWith(s"_$scalaBinaryVersion"))
-      (rawName.replaceAllLiterally(s"_$scalaBinaryVersion", ""), true)
+  private def parseModuleName(scalaVersion: ScalaVersion)(rawName: String): (String, Boolean) =
+    if (rawName.endsWith(s"_${scalaVersion.binary}"))
+      (rawName.replaceAllLiterally(s"_${scalaVersion.binary}", ""), true)
+    else if (rawName.endsWith(s"_${scalaVersion.full}"))
+      (rawName.replaceAllLiterally(s"_${scalaVersion.full}", ""), true)
     else
       (rawName, false)
 

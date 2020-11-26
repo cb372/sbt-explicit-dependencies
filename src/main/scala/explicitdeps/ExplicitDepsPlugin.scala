@@ -55,13 +55,14 @@ object ExplicitDepsPlugin extends AutoPlugin {
     val allLibraryDeps = getAllLibraryDeps(compile.in(Compile).value.asInstanceOf[Analysis], log)(csrCacheDirectoryValueOpt, baseDirectoryValue)
     val libraryDeps = libraryDependencies.value
     val scalaBinaryVer = scalaBinaryVersion.value
+    val scalaFullVer = scalaVersion.value
     val filter = undeclaredCompileDependenciesFilter.value
 
     Logic.getUndeclaredCompileDependencies(
       projectName,
       allLibraryDeps,
       libraryDeps,
-      scalaBinaryVer,
+      ScalaVersion(scalaBinaryVer, scalaFullVer),
       filter,
       log
     )
@@ -81,13 +82,14 @@ object ExplicitDepsPlugin extends AutoPlugin {
     val allLibraryDeps = getAllLibraryDeps(compile.in(Compile).value.asInstanceOf[Analysis], log)(csrCacheDirectoryValueOpt, baseDirectoryValue)
     val libraryDeps = libraryDependencies.value
     val scalaBinaryVer = scalaBinaryVersion.value
+    val scalaFullVer = scalaVersion.value
     val filter = unusedCompileDependenciesFilter.value
 
     Logic.getUnusedCompileDependencies(
       projectName,
       allLibraryDeps,
       libraryDeps,
-      scalaBinaryVer,
+      ScalaVersion(scalaBinaryVer, scalaFullVer),
       filter,
       log
     )
