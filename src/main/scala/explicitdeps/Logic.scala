@@ -11,12 +11,12 @@ object Logic {
     projectName: String,
     allLibraryDeps: Set[File],
     libraryDeps: Seq[ModuleID],
-    scalaBinaryVer: String,
+    scalaVersion: ScalaVersion,
     moduleFilter: ModuleFilter,
     log: Logger
   ): Set[Dependency] = {
-    val compileDependencies = getCompileDependencies(allLibraryDeps, scalaBinaryVer, log)
-    val declaredCompileDependencies = getDeclaredCompileDependencies(libraryDeps, scalaBinaryVer, log)
+    val compileDependencies = getCompileDependencies(allLibraryDeps, scalaVersion, log)
+    val declaredCompileDependencies = getDeclaredCompileDependencies(libraryDeps, scalaVersion, log)
 
     val undeclaredCompileDependencies =
       (compileDependencies diff declaredCompileDependencies)
@@ -38,12 +38,12 @@ object Logic {
     projectName: String,
     allLibraryDeps: Set[File],
     libraryDeps: Seq[ModuleID],
-    scalaBinaryVer: String,
+    scalaVersion: ScalaVersion,
     moduleFilter: ModuleFilter,
     log: Logger
   ): Set[Dependency] = {
-    val compileDependencies = getCompileDependencies(allLibraryDeps, scalaBinaryVer, log)
-    val declaredCompileDependencies = getDeclaredCompileDependencies(libraryDeps, scalaBinaryVer, log)
+    val compileDependencies = getCompileDependencies(allLibraryDeps, scalaVersion, log)
+    val declaredCompileDependencies = getDeclaredCompileDependencies(libraryDeps, scalaVersion, log)
 
     val unusedCompileDependencies =
       (declaredCompileDependencies diff compileDependencies)
@@ -61,7 +61,7 @@ object Logic {
     unusedCompileDependencies
   }
 
-  private def getCompileDependencies(allLibraryDeps: Set[File], scalaBinaryVersion: String, log: Logger): Set[Dependency] = {
+  private def getCompileDependencies(allLibraryDeps: Set[File], scalaVersion: ScalaVersion, log: Logger): Set[Dependency] = {
     val compileDependencyJarFiles =
       allLibraryDeps
         .filter(_.getName.endsWith(".jar"))
@@ -69,19 +69,22 @@ object Logic {
         .filterNot(_.getName matches "scala-library.*\\.jar")
 
     val compileDependencies = compileDependencyJarFiles
-      .flatMap(BoringStuff.jarFileToDependency(scalaBinaryVersion, log))
+      .flatMap(BoringStuff.jarFileToDependency(scalaVersion, log))
     log.debug(s"Compile depends on:\n${compileDependencies.mkString("  ", "\n  ", "")}")
 
     compileDependencies
   }
 
-  private def getDeclaredCompileDependencies(libraryDependencies: Seq[ModuleID], scalaBinaryVersion: String, log: Logger): Set[Dependency] = {
+  private def getDeclaredCompileDependencies(libraryDependencies: Seq[ModuleID], scalaVersion: ScalaVersion, log: Logger): Set[Dependency] = {
     val compileConfigLibraryDependencies = libraryDependencies
       .filter(isCompileDependency)
       .filterNot(_.name == "scala-library")
 
     val declaredCompileDependencies = compileConfigLibraryDependencies
-      .map(moduleId => Dependency(moduleId.organization, moduleId.name, moduleId.revision, moduleId.crossVersion.isInstanceOf[Binary]))
+      .map{moduleId => 
+        val isCross = moduleId.crossVersion.isInstanceOf[Binary] ||  moduleId.crossVersion.isInstanceOf[Full]
+        Dependency(moduleId.organization, moduleId.name, moduleId.revision, isCross)
+      }
     log.debug(s"Declared dependencies:\n${declaredCompileDependencies.mkString("  ", "\n  ", "")}")
 
     declaredCompileDependencies.toSet

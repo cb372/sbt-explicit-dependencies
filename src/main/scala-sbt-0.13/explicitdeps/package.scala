@@ -1,6 +1,7 @@
 package object explicitdeps {
 
   type Binary = sbt.CrossVersion.Binary
+  type Full = sbt.CrossVersion.Full
   type Analysis = sbt.inc.Analysis
   type ModuleFilter = sbt.ModuleFilter
 

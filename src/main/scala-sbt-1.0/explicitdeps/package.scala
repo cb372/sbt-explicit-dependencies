@@ -1,6 +1,7 @@
 package object explicitdeps {
 
   type Binary = sbt.librarymanagement.Binary
+  type Full = sbt.librarymanagement.Full
   type Analysis = sbt.internal.inc.Analysis
   type ModuleFilter = sbt.librarymanagement.ModuleFilter
 
