@@ -20,5 +20,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: olafurpg/setup-scala@v10
+      - uses: coursier/cache-action@v3
       - name: Test
         run: sbt -Dfile.encoding=UTF8 -J-XX:ReservedCodeCacheSize=256M "^^${{ matrix.sbt_version }}" "scripted ${{ matrix.test_groups }}"
