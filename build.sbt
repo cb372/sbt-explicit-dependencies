@@ -29,7 +29,6 @@ releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
   runClean,
-  releaseStepCommandAndRemaining("^ scripted"),
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
