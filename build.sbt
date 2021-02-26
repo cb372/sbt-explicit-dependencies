@@ -14,7 +14,7 @@ crossSbtVersions := Seq(
   latestSbt_1_4_x_version
 )
 
-scalaVersion := "2.12.11"
+scalaVersion := "2.12.13"
 organization := "com.github.cb372"
 description := "An sbt plugin to check that your project does not directly depend on any transitive dependencies for compilation"
 homepage := Some(url("https://github.com/cb372/sbt-explicit-dependencies"))
