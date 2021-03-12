@@ -6,11 +6,15 @@ import scala.util.control.NonFatal
 import scala.xml.XML
 
 import sbt.util.Logger
+import sbt.librarymanagement.ModuleID
 
 case class ScalaVersion(
   binary: String,
   full: String
-)
+) {
+  def binarySuffix = "_" + binary
+  def fullSuffix = "_" + full
+}
 
 object BoringStuff {
 
@@ -67,9 +71,9 @@ object BoringStuff {
       // We use the parent dir to get the version because it's sometimes not present in the pom file
       val version = file.getParentFile.getName
 
-      val (name, crossVersion) = parseModuleName(scalaVersion)(rawName)
+      val (name, crossVersion, platform) = parseModuleName(scalaVersion)(rawName)
 
-      Some(Dependency(organization, name, version, crossVersion))
+      Some(Dependency(organization, name, version, crossVersion, platform))
     } catch {
       case NonFatal(e) =>
         log.warn(s"Failed to parse dependency information from POM file ${file.getAbsolutePath}")
@@ -84,9 +88,9 @@ object BoringStuff {
       val rawName = xml \ "info" \@ "module"
       val version = xml \ "info" \@ "revision"
 
-      val (name, crossVersion) = parseModuleName(scalaVersion)(rawName)
+      val (name, crossVersion, scalajs) = parseModuleName(scalaVersion)(rawName)
 
-      Some(Dependency(organization, name, version, crossVersion))
+      Some(Dependency(organization, name, version, crossVersion, scalajs))
     } catch {
       case NonFatal(e) =>
         log.warn(s"Failed to parse dependency information from Ivy file ${file.getAbsolutePath}")
@@ -94,12 +98,39 @@ object BoringStuff {
     }
   }
 
-  private def parseModuleName(scalaVersion: ScalaVersion)(rawName: String): (String, Boolean) =
-    if (rawName.endsWith(s"_${scalaVersion.binary}"))
-      (rawName.replaceAllLiterally(s"_${scalaVersion.binary}", ""), true)
-    else if (rawName.endsWith(s"_${scalaVersion.full}"))
-      (rawName.replaceAllLiterally(s"_${scalaVersion.full}", ""), true)
+  private def parseModuleName(scalaVersion: ScalaVersion)(rawName: String): (String, Boolean, Option[ScalaJSVersion]) = {
+    if (rawName.endsWith(scalaVersion.binarySuffix)) {
+      val name = rawName.dropRight(scalaVersion.binarySuffix.length)
+      val platform = parseScalaPlatform(name)
+      val newName = name.dropRight(platform.map(_.suffix.length).getOrElse(0))
+      (name, true, platform)
+    }
+    else if (rawName.endsWith(scalaVersion.fullSuffix))
+      (rawName.dropRight(scalaVersion.fullSuffix.length), true, None)
     else
-      (rawName, false)
+      (rawName, false, None)
+  }
+  
+  private def parseScalaPlatform(rawName: String): Option[ScalaJSVersion] = 
+    if(rawName.endsWith(ScalaJSVersion.V1.suffix)) Some(ScalaJSVersion.V1)
+    else if (rawName.endsWith(ScalaJSVersion.V06.suffix)) Some(ScalaJSVersion.V06)
+    else None
 
+
+  def moduleIDToDependency(moduleId: ModuleID): Dependency = {
+    val isCross = moduleId.crossVersion.isInstanceOf[Binary] ||  moduleId.crossVersion.isInstanceOf[Full]
+    val platform = moduleId.crossVersion match {
+      case b: Binary if b.prefix == ScalaJSVersion.V1.prefix => Some(ScalaJSVersion.V1)
+      case b: Binary if b.prefix == ScalaJSVersion.V06.prefix => Some(ScalaJSVersion.V06)
+      case _ => None
+    }
+
+    Dependency(
+      moduleId.organization, 
+      moduleId.name + platform.map(_.suffix).getOrElse(""), 
+      moduleId.revision, 
+      isCross, 
+      platform
+    )
+  }
 }
