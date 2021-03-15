@@ -1,3 +1,4 @@
+import sbt.librarymanagement.ModuleID
 package object explicitdeps {
 
   type Binary = sbt.librarymanagement.Binary
@@ -33,5 +34,16 @@ package object explicitdeps {
     log.debug(s"Library dependencies:\n${allLibraryDeps.mkString("  ", "\n  ", "")}")
     allLibraryDeps
   }
+  
+  def modulePlatform(moduleId: ModuleID): Option[ScalaJSVersion] = 
+    moduleId.crossVersion match {
+      case b: sbt.librarymanagement.Binary => 
+        if(b.prefix == ScalaJSVersion.V1.prefix)
+          Some(ScalaJSVersion.V1)
+        else if (b.prefix == ScalaJSVersion.V06.prefix)
+          Some(ScalaJSVersion.V06)
+        else None
+      case _ => None
+    }
 
 }

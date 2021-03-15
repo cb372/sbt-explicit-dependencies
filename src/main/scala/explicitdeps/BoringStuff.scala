@@ -119,11 +119,7 @@ object BoringStuff {
 
   def moduleIDToDependency(moduleId: ModuleID): Dependency = {
     val isCross = moduleId.crossVersion.isInstanceOf[Binary] ||  moduleId.crossVersion.isInstanceOf[Full]
-    val platform = moduleId.crossVersion match {
-      case b: Binary if b.prefix == ScalaJSVersion.V1.prefix => Some(ScalaJSVersion.V1)
-      case b: Binary if b.prefix == ScalaJSVersion.V06.prefix => Some(ScalaJSVersion.V06)
-      case _ => None
-    }
+    val platform = modulePlatform(moduleId) 
 
     Dependency(
       moduleId.organization, 
