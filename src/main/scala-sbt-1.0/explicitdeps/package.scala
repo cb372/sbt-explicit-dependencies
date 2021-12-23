@@ -7,12 +7,13 @@ package object explicitdeps {
 
   val defaultModuleFilter: ModuleFilter = sbt.librarymanagement.DependencyFilter.moduleFilter()
 
-  private def toFile(x: AnyRef, csrCacheDirectoryValueOpt: Option[String], baseDirectoryValue: String): java.io.File = {
+  private def toFile(x: AnyRef, csrCacheDirectoryValueOpt: Option[String], baseDirectoryValue: String, ivyHomeValue: String): java.io.File = {
     if (x.getClass.getSimpleName.contains("VirtualFile")) {
       // sbt 1.4.0 or newer
       val id = x.getClass.getMethod("id").invoke(x).toString
       val path = id
         .replaceAllLiterally("${CSR_CACHE}", csrCacheDirectoryValueOpt.mkString)
+        .replaceAllLiterally("${IVY_HOME}", ivyHomeValue)
         .replaceAllLiterally("${BASE}", baseDirectoryValue)
       new java.io.File(path)
     } else {
@@ -22,14 +23,13 @@ package object explicitdeps {
   }
 
   def getAllLibraryDeps(analysis: Analysis, log: sbt.util.Logger)
-    (csrCacheDirectoryValueOpt: Option[String], baseDirectoryValue: String): Set[java.io.File] = {
+    (csrCacheDirectoryValueOpt: Option[String], baseDirectoryValue: String, ivyHomeValue: String): Set[java.io.File] = {
     log.debug(
       s"Source to library relations:\n${analysis.relations.libraryDep.all.map(r => s"  ${r._1} -> ${r._2}").mkString("\n")}"
     )
-    log.debug(s"Using CSR_CACHE=${csrCacheDirectoryValueOpt.mkString} BASE=$baseDirectoryValue")
+    log.debug(s"Using CSR_CACHE=${csrCacheDirectoryValueOpt.mkString} BASE=$baseDirectoryValue IVY_HOME=$ivyHomeValue")
     val allLibraryDeps = analysis.relations.allLibraryDeps.asInstanceOf[Set[AnyRef]]
-      .map(x => toFile(x, csrCacheDirectoryValueOpt, baseDirectoryValue))
-      .toSet
+      .map(x => toFile(x, csrCacheDirectoryValueOpt, baseDirectoryValue, ivyHomeValue))
     log.debug(s"Library dependencies:\n${allLibraryDeps.mkString("  ", "\n  ", "")}")
     allLibraryDeps
   }
