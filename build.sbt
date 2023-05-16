@@ -2,13 +2,11 @@ import ReleaseTransformations._
 
 enablePlugins(SbtPlugin)
 
-val latestSbt_0_13_x_version = "0.13.18"
 val latestSbt_1_2_x_version = "1.2.8"
 val latestSbt_1_3_x_version = "1.3.13"
 val latestSbt_1_4_x_version = "1.4.0"
 
 crossSbtVersions := Seq(
-  latestSbt_0_13_x_version,
   latestSbt_1_2_x_version,
   latestSbt_1_3_x_version,
   latestSbt_1_4_x_version
@@ -20,10 +18,6 @@ description := "An sbt plugin to check that your project does not directly depen
 homepage := Some(url("https://github.com/cb372/sbt-explicit-dependencies"))
 licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
 
-// This goes in build.sbt, not in project/plugins.sbt, because we are a plugin depending on another plugin.
-// "It's funky, but it's right." -- @dwijnand
-addSbtPlugin("com.dwijnand" % "sbt-compat" % "1.2.6")
-
 releaseCrossBuild := false
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
@@ -32,7 +26,6 @@ releaseProcess := Seq[ReleaseStep](
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
-  releaseStepCommandAndRemaining(s"^^$latestSbt_0_13_x_version publish"),
   releaseStepCommandAndRemaining(s"^^$latestSbt_1_3_x_version publish"), // Note: if we publish with 1.4.0, the plugin will only work with 1.4.x
   releaseStepTask(updateVersionInExampleProject),
   setNextVersion,
