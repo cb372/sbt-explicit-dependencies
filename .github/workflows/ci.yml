@@ -23,5 +23,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
+        with:
+          distribution: adopt
+          java-version: 17
       - name: Test
         run: sbt -Dfile.encoding=UTF8 -J-XX:ReservedCodeCacheSize=256M "^^${{ matrix.sbt_version }}" "scripted ${{ matrix.test_groups }}"
