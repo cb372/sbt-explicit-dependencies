@@ -1,7 +1,7 @@
 package explicitdeps
 
 import sbt.Keys._
-import sbt._
+import sbt.{ScalaVersion => _, _}
 
 object ExplicitDepsPlugin extends AutoPlugin {
 
