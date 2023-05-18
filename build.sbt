@@ -5,11 +5,13 @@ enablePlugins(SbtPlugin)
 val latestSbt_1_2_x_version = "1.2.8"
 val latestSbt_1_3_x_version = "1.3.13"
 val latestSbt_1_4_x_version = "1.4.0"
+val latestSbt_1_8_x_version = "1.8.3"
 
 crossSbtVersions := Seq(
   latestSbt_1_2_x_version,
   latestSbt_1_3_x_version,
-  latestSbt_1_4_x_version
+  latestSbt_1_4_x_version,
+  latestSbt_1_8_x_version
 )
 
 scalaVersion := "2.12.11"
