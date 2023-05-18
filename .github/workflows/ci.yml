@@ -27,9 +27,8 @@ jobs:
         run: sbt -Dfile.encoding=UTF8 -J-XX:ReservedCodeCacheSize=256M "^^${{ matrix.sbt_version }}" "scripted basic/*"
 
   release:
-    # TODO uncomment after testing
-    #needs: [ test ]
-    #if: github.ref == 'refs/heads/main' || github.ref_type == 'tag'
+    needs: [ test ]
+    if: github.ref == 'refs/heads/main' || github.ref_type == 'tag'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
