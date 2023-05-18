@@ -1,5 +1,3 @@
-import ReleaseTransformations._
-
 enablePlugins(SbtPlugin)
 
 val latestSbt_1_3_x_version = "1.3.13"
@@ -18,7 +16,7 @@ description := "An sbt plugin to check that your project does not directly depen
 homepage := Some(url("https://github.com/cb372/sbt-explicit-dependencies"))
 licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
 
-releaseCrossBuild := false
+/*
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
@@ -32,6 +30,7 @@ releaseProcess := Seq[ReleaseStep](
   commitNextVersion,
   pushChanges
 )
+*/
 
 lazy val updateVersionInExampleProject = taskKey[Unit]("update the version of the plugin used in the example project")
 updateVersionInExampleProject := {
