@@ -1,6 +1,6 @@
 # sbt-explicit-dependencies
 
-[![Build Status](https://travis-ci.org/cb372/sbt-explicit-dependencies.svg?branch=master)](https://travis-ci.org/cb372/sbt-explicit-dependencies)
+[![CI](https://github.com/cb372/sbt-explicit-dependencies/actions/workflows/ci.yml/badge.svg)](https://github.com/cb372/sbt-explicit-dependencies/actions/workflows/ci.yml)
 
 An sbt plugin to check that your `libraryDependencies` accurately reflects the
 libraries that your code depends on in order to compile.
@@ -35,7 +35,7 @@ dependencies on any libraries you don't actually need.
 
 ## How to install
 
-[ ![Download](https://api.bintray.com/packages/cb372/sbt-plugins/sbt-explicit-dependencies/images/download.svg) ](https://bintray.com/cb372/sbt-plugins/sbt-explicit-dependencies/_latestVersion)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.cb372/sbt-explicit-dependencies/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.cb372/sbt-explicit-dependencies/badge.svg)
 
 Add the plugin in `project/plugins.sbt` or as a global plugin in
 `~/.sbt/1.0/plugins/plugins.sbt`:
