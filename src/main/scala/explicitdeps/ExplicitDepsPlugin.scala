@@ -24,7 +24,7 @@ object ExplicitDepsPlugin extends AutoPlugin {
   import autoImport._
 
   override def trigger = allRequirements
-  override def requires = empty
+  override def requires = sbt.plugins.IvyPlugin
   override lazy val projectSettings = Seq(
     undeclaredCompileDependencies := undeclaredCompileDependenciesTask.value,
     undeclaredCompileDependenciesTest := undeclaredCompileDependenciesTestTask.value,
