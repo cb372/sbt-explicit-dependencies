@@ -87,11 +87,10 @@ object Logic {
       .filterNot(_.name == "scala3-library")
 
 
-    val declaredCompileDependencies = compileConfigLibraryDependencies
-      .map{moduleId => 
-        val isCross = moduleId.crossVersion.isInstanceOf[Binary] ||  moduleId.crossVersion.isInstanceOf[Full]
-        Dependency(moduleId.organization, moduleId.name, moduleId.revision, isCross)
-      }
+    val declaredCompileDependencies = 
+      compileConfigLibraryDependencies
+        .map(BoringStuff.moduleIDToDependency)
+
     log.debug(s"Declared dependencies:\n${declaredCompileDependencies.mkString("  ", "\n  ", "")}")
 
     declaredCompileDependencies.toSet
