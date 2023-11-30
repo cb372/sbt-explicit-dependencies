@@ -65,7 +65,12 @@ object BoringStuff {
       val rawName = (xml \ "artifactId").text
 
       // We use the parent dir to get the version because it's sometimes not present in the pom file
-      val version = file.getParentFile.getName
+      // We use URL decoder to cater for characters that are valid in version strings but encoded
+      // in the file path, such as "+" used for semver metadata, encoded as "%2B"
+      val version = java.net.URLDecoder.decode(
+        file.getParentFile.getName,
+        java.nio.charset.Charset.forName("utf8")
+      )
 
       val (name, crossVersion) = parseModuleName(scalaVersion)(rawName)
 
