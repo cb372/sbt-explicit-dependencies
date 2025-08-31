@@ -23,6 +23,7 @@ jobs:
         with:
           distribution: adopt
           java-version: 17
+      - uses: sbt/setup-sbt@v1
       - name: Test
         run: sbt -Dfile.encoding=UTF8 -J-XX:ReservedCodeCacheSize=256M "^^${{ matrix.sbt_version }}" "scripted basic/*"
 
@@ -38,6 +39,7 @@ jobs:
         with:
           distribution: adopt
           java-version: 17
+      - uses: sbt/setup-sbt@v1
       - name: Release
         run: sbt ci-release
         env:
