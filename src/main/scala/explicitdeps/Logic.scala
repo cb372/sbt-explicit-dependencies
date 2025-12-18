@@ -1,8 +1,7 @@
 package explicitdeps
 
 import java.io.File
-
-import sbt.librarymanagement.ModuleID
+import sbt.librarymanagement.{For2_13Use3, For3Use2_13, ModuleID}
 import sbt.util.Logger
 
 object Logic {
@@ -88,9 +87,14 @@ object Logic {
 
 
     val declaredCompileDependencies = compileConfigLibraryDependencies
-      .map{moduleId => 
-        val isCross = moduleId.crossVersion.isInstanceOf[Binary] ||  moduleId.crossVersion.isInstanceOf[Full]
-        Dependency(moduleId.organization, moduleId.name, moduleId.revision, isCross)
+      .map{moduleId =>
+        val (isCross, suffix) = moduleId.crossVersion match {
+          case _: For3Use2_13 if scalaVersion.binary == "3" => (false, "_2.13")
+          case _: For2_13Use3 if scalaVersion.binary == "2.13" => (false, "_3")
+          case _: Binary | _: Full | _: For3Use2_13 | _: For2_13Use3 => (true, "")
+          case _ => (false, "")
+        }
+        Dependency(moduleId.organization, moduleId.name + suffix, moduleId.revision, isCross)
       }
     log.debug(s"Declared dependencies:\n${declaredCompileDependencies.mkString("  ", "\n  ", "")}")
 
