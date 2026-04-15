@@ -96,9 +96,9 @@ object BoringStuff {
 
   private def parseModuleName(scalaVersion: ScalaVersion)(rawName: String): (String, Boolean) =
     if (rawName.endsWith(s"_${scalaVersion.binary}"))
-      (rawName.replaceAllLiterally(s"_${scalaVersion.binary}", ""), true)
+      (rawName.replace(s"_${scalaVersion.binary}", ""), true)
     else if (rawName.endsWith(s"_${scalaVersion.full}"))
-      (rawName.replaceAllLiterally(s"_${scalaVersion.full}", ""), true)
+      (rawName.replace(s"_${scalaVersion.full}", ""), true)
     else
       (rawName, false)
 

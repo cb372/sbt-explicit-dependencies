@@ -1,6 +1,6 @@
 scalaVersion := sys.props("scala.version")
-crossScalaVersions := Seq("2.11.12", scalaVersion.value)
+crossScalaVersions := Seq("2.13.18", scalaVersion.value)
 libraryDependencies ++= Seq(
-  "org.typelevel" %% "cats-core" % "1.4.0"
+  "org.typelevel" %% "cats-core" % "2.9.0"
 )
-addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.8" cross CrossVersion.binary)
+addCompilerPlugin(("org.typelevel" % "kind-projector" % "0.13.4").cross(CrossVersion.full))

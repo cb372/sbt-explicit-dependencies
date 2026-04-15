@@ -1,5 +1,4 @@
-import ammonite.interp.api.IvyConstructor
-
 object Main {
-  println(IvyConstructor.scalaBinaryVersion)
+  val _ = ammonite.interp.api.IvyConstructor
+  println(1)
 }

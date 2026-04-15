@@ -66,9 +66,10 @@ object Logic {
       allLibraryDeps
         .filter(_.getName.endsWith(".jar"))
         .filterNot(_.getName == "rt.jar") // Java runtime
-        .filterNot(_.getName matches "scala-library.*\\.jar")
-        .filterNot(_.getName matches "scalajs-library.*\\.jar")
-        .filterNot(_.getName matches "scala3-library.*\\.jar")
+        .filterNot(_.getName.matches("scala-library.*\\.jar"))
+        .filterNot(_.getName.matches("scalajs-library.*\\.jar"))
+        .filterNot(_.getName.matches("scalajs-scalalib.*\\.jar"))
+        .filterNot(_.getName.matches("scala3-library.*\\.jar"))
 
 
 
@@ -84,6 +85,7 @@ object Logic {
       .filter(isCompileDependency)
       .filterNot(_.name == "scala-library")
       .filterNot(_.name == "scalajs-library")
+      .filterNot(_.name == "scalajs-scalalib")
       .filterNot(_.name == "scala3-library")
 
 

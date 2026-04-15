@@ -1,16 +1,17 @@
 enablePlugins(SbtPlugin)
 
-val latestSbt_1_3_x_version = "1.3.13"
-val latestSbt_1_4_x_version = "1.4.0"
-val latestSbt_1_8_x_version = "1.8.3"
+val scala212 = "2.12.21"
+val scala3 = "3.8.3"
 
-crossSbtVersions := Seq(
-  latestSbt_1_3_x_version,
-  latestSbt_1_4_x_version,
-  latestSbt_1_8_x_version
-)
+crossScalaVersions := Seq(scala212, scala3)
+scalaVersion := scala212
 
-scalaVersion := "2.12.17"
+(pluginCrossBuild / sbtVersion) := {
+  if (scalaVersion.value.startsWith("2.12.")) "1.12.9"
+  else "2.0.0-RC12"
+}
+
+name := "sbt-explicit-dependencies"
 organization := "com.github.cb372"
 description := "An sbt plugin to check that your project does not directly depend on any transitive dependencies for compilation"
 homepage := Some(url("https://github.com/cb372/sbt-explicit-dependencies"))
@@ -27,7 +28,7 @@ developers := List(
 scriptedLaunchOpts ++= Seq(
   "-Xmx1024M",
   "-Dplugin.version=" + version.value,
-  "-Dscala.version=2.12.11",
+  "-Dscala.version=2.12.21",
   s"-Dsbt.boot.directory=${file(sys.props("user.home")) / ".sbt" / "boot"}"
 )
 scriptedBufferLog := false
