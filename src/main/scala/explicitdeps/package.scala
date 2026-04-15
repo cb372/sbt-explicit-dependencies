@@ -12,8 +12,8 @@ package object explicitdeps {
       // sbt 1.4.0 or newer
       val id = x.getClass.getMethod("id").invoke(x).toString
       val path = id
-        .replaceAllLiterally("${CSR_CACHE}", csrCacheDirectoryValueOpt.mkString)
-        .replaceAllLiterally("${BASE}", baseDirectoryValue)
+        .replace("${CSR_CACHE}", csrCacheDirectoryValueOpt.mkString)
+        .replace("${BASE}", baseDirectoryValue)
       new java.io.File(path)
     } else {
       // sbt 1.3.x or older

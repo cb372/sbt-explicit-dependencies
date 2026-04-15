@@ -52,7 +52,7 @@ object ExplicitDepsPlugin extends AutoPlugin {
     val projectName = name.value
     val csrCacheDirectoryValueOpt = csrCacheDirectoryValueTask.value
     val baseDirectoryValue = appConfiguration.value.baseDirectory().getCanonicalFile.toPath.toString
-    val allLibraryDeps = getAllLibraryDeps(compile.in(Compile).value.asInstanceOf[Analysis], log)(csrCacheDirectoryValueOpt, baseDirectoryValue)
+    val allLibraryDeps = getAllLibraryDeps((Compile / compile).value.asInstanceOf[Analysis], log)(csrCacheDirectoryValueOpt, baseDirectoryValue)
     val libraryDeps = libraryDependencies.value
     val scalaBinaryVer = scalaBinaryVersion.value
     val scalaFullVer = scalaVersion.value
@@ -79,7 +79,7 @@ object ExplicitDepsPlugin extends AutoPlugin {
     val projectName = name.value
     val csrCacheDirectoryValueOpt = csrCacheDirectoryValueTask.value
     val baseDirectoryValue = appConfiguration.value.baseDirectory().getCanonicalFile.toPath.toString
-    val allLibraryDeps = getAllLibraryDeps(compile.in(Compile).value.asInstanceOf[Analysis], log)(csrCacheDirectoryValueOpt, baseDirectoryValue)
+    val allLibraryDeps = getAllLibraryDeps((Compile / compile).value.asInstanceOf[Analysis], log)(csrCacheDirectoryValueOpt, baseDirectoryValue)
     val libraryDeps = libraryDependencies.value
     val scalaBinaryVer = scalaBinaryVersion.value
     val scalaFullVer = scalaVersion.value

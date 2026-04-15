@@ -1,5 +1,8 @@
 package explicitdeps
 
+import sjsonnew.BasicJsonProtocol._
+import sjsonnew.JsonFormat
+
 final case class Dependency(organization: String, name: String, version: String, crossVersion: Boolean) {
 
   override def toString: String =
@@ -10,4 +13,10 @@ final case class Dependency(organization: String, name: String, version: String,
 
 }
 
-
+object Dependency {
+  implicit val dependencyJsonFormat: JsonFormat[Dependency] =
+    caseClassArray4(
+      Dependency.apply,
+      (d: Dependency) => Some((d.organization, d.name, d.version, d.crossVersion))
+    )
+}

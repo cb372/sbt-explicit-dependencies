@@ -13,9 +13,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - sbt_version: 1.3.13
-          - sbt_version: 1.4.0
-          - sbt_version: 1.8.3
+          - scala_prefix: "++2.12.21"
+          - scala_prefix: "++3.8.3"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -24,7 +23,7 @@ jobs:
           distribution: adopt
           java-version: 17
       - name: Test
-        run: sbt -Dfile.encoding=UTF8 -J-XX:ReservedCodeCacheSize=256M "^^${{ matrix.sbt_version }}" "scripted basic/*"
+        run: sbt -Dfile.encoding=UTF8 -J-XX:ReservedCodeCacheSize=256M "${{ matrix.scala_prefix }}" scripted basic/*
 
   release:
     needs: [ test ]

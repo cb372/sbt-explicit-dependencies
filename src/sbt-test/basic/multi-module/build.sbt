@@ -1,4 +1,4 @@
-scalaVersion in ThisBuild := sys.props("scala.version")
+ThisBuild / scalaVersion := sys.props("scala.version")
 
 val commonDeps = Seq(
   "org.typelevel" %% "cats-core" % "1.4.0"
